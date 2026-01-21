@@ -52,8 +52,16 @@ public final class Protocolo {
         return INFO + SEP + text;
     }
 
+
     // Mensaje broadcast del servidor: MSG|user|text
+    //Cuando el Servidor->Clientes, hace un envio del mensaje que a enviado otro usuario necesitamos poner la informacion de TIPO|USUARIO|Contenido
     public static String serverMsg(String user, String text) {
         return MSG + SEP + user + SEP + text;
     }
+    /*Esto significa que "serverMsg" deberemos usarlo luego en la funcion del servidor que haga el envio a todos los demas
+    usuarios cuando necesiten recibir un mensaje. Recorrera todos los usuarios activos y les mandara el mensaje.
+    #El servidor es el "Repartidor" ya que el cliente no conoce los demas usuarios ONLINE y si tuviera que hacerlo seria bastanet complicado de configurar.
+    # Tener en cuenta tambien -> line.split("\\|", 3); ->split(regex, limit), en este caso el Limite seran 3 como bien dije antes (TIPO|USUARIO|Contenido).
+          */
 }
+
