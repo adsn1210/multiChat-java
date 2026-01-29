@@ -50,8 +50,8 @@ public class ChatServer {
 
     public void broadcast(String line){
 
-        for (HiloCliente ch : clients.values()){
-            ch.send(line);
+        for (HiloCliente hc : clients.values()){
+            hc.send(line);
         }
     }
 }

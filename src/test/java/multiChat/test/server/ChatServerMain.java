@@ -3,21 +3,22 @@ package multiChat.test.server;
 import multiChat.test.common.NetUtils;
 import multiChat.test.common.Protocolo;
 
-import java.sql.SQLOutput;
-
 public class ChatServerMain {
-    public static void main(String[] args) {
-        System.out.println("Servidor arrancado....Esperando conexiones (puerto ("+(Protocolo.PORT +")"));
-        System.out.println("IP Local "+(NetUtils.localIp()));
 
+    public static void main(String[] args) {
+
+        System.out.println(
+                "Servidor arrancado... Esperando conexiones (puerto " + Protocolo.PORT + ")"
+        );
+        System.out.println("IP Local: " + NetUtils.localIp());
+
+        // Logger del servidor
         ServerLogger logger = new ServerLogger("ChatServer_log.txt");
 
-        // kad: me da error, arreglalo ahora despois
+        // Crear servidor
+        ChatServer server = new ChatServer(Protocolo.PORT, logger);
 
-        //Creamos servidor
-        //ChatServer server = new ChatServer(Protocolo.PORT,logger);
-
-        //Bucle de Escucha
-        //server.start();
+        // Arrancar bucle de escucha (accept)
+        server.start();
     }
 }

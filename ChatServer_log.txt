@@ -1,0 +1,77 @@
+En 29/01/2026 15:16:04[INFO] ADRIAN se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:16:12ADRIAN : hOLAS
+
+===============En 29/01/2026 15:16:23ADRIAN : hOLA
+
+===============En 29/01/2026 15:16:25ADRIAN : KDD
+
+===============En 29/01/2026 15:16:26ADRIAN : DKDDD
+
+===============En 29/01/2026 15:16:48ADRIAN : AA
+
+===============En 29/01/2026 15:17:03[INFO] ADRIAN ha salido del chat.
+
+===============En 29/01/2026 15:18:15[INFO] Joker se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:18:26Joker : hola
+
+===============En 29/01/2026 15:18:29[INFO] Joker ha salido del chat.
+
+===============En 29/01/2026 15:18:33[INFO] Joker se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:18:37[INFO] Joker ha salido del chat.
+
+===============En 29/01/2026 15:18:43[INFO] Oscar se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:18:52[INFO] Oscar ha salido del chat.
+
+===============En 29/01/2026 15:18:55[INFO] omar se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:18:59omar : Hola
+
+===============En 29/01/2026 15:19:06[INFO] Joker se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:19:11[INFO] Joker ha salido del chat.
+
+===============En 29/01/2026 15:22:13[INFO] Omarsito se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:22:28[INFO] Paula se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:22:41Omarsito : Hola Soy omar
+
+===============En 29/01/2026 15:22:46Paula : Hola sy Paula
+
+===============En 29/01/2026 15:22:51omar : hola soyoscar
+
+===============En 29/01/2026 15:23:13Omarsito : fff44b
+
+===============En 29/01/2026 15:23:21omar : rrrrrrr
+
+===============En 29/01/2026 15:23:57[INFO] omar ha salido del chat.
+
+===============En 29/01/2026 15:23:59[INFO] Omarsito ha salido del chat.
+
+===============En 29/01/2026 15:24:01[INFO] Paula ha salido del chat.
+
+===============En 29/01/2026 15:27:46[INFO] Ave maria se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:29:07Ave maria : aa
+
+===============En 29/01/2026 15:31:45[INFO] Ave maria ha salido del chat.
+
+===============En 29/01/2026 15:32:22[INFO] aa se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:32:25aa : Hola
+
+===============En 29/01/2026 15:32:26aa : que tal
+
+===============En 29/01/2026 15:32:29aa : soy epp
+
+===============En 29/01/2026 15:32:31[INFO] aa ha salido del chat.
+
+===============En 29/01/2026 15:36:36[INFO] op se ha conectado (127.0.0.1).
+
+===============En 29/01/2026 15:38:21[INFO] op ha salido del chat.
+
+===============

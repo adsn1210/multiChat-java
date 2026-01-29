@@ -9,11 +9,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import multiChat.test.cliente.ChatCliente;
+import multiChat.test.cliente.ServerListener;
+import multiChat.test.common.Protocolo;
+
+
 public class ChatClienteGUI extends JFrame {
 
+    private ChatCliente cliente;
     //dimensiones, estoy hasta los huevos de cambiar 40 parametros a la vez
-    private final int ancho = 600;
-    private final int alto = 900;
+    private int ancho = 600;
+    private int alto = 750;
 
     private JPanel chatContainer;
     private JTextField inputField;
@@ -38,12 +44,32 @@ public class ChatClienteGUI extends JFrame {
         cargarRecursos();
 
         this.miNombre = username;
+
+        try {
+            cliente = new ChatCliente();
+
+            cliente.connect("localhost", Protocolo.PORT);
+            cliente.sendJoin(miNombre);
+
+            ServerListener listener = new ServerListener(cliente.getReader(), this);
+
+            new Thread(listener).start();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo conectar al servidor",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(1);
+        }
         setTitle("Instant Message");
         setSize(ancho, alto);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // PROFUNDIDAD, como son varias capas, hay que hacerlo así por q si no es un lío de cojones
+        // PROFUNDIDAD, como son varias capas, hay que hacerlo así por q si no es un lío
         JLayeredPane layeredPane = new JLayeredPane();
 
         // CAPA 1 : FONDO
@@ -142,11 +168,31 @@ public class ChatClienteGUI extends JFrame {
         inputField.addActionListener(e -> {
             String text = inputField.getText().trim();
             if (!text.isEmpty()) {
-                addMessage(miNombre, text, true);
+                cliente.sendMessage(text); // 🔥 SOLO ENVÍAS
                 inputField.setText("");
             }
         });
+
+
     }
+    public void onChatMessage(String user, String text) {
+        boolean isMe = user.equals(miNombre);
+        addMessage(user, text, isMe);
+    }
+
+    public void onSystemMessage(String text) {
+        addMessage("Sistema", text, false);
+    }
+
+    public void onError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void onDisconnected() {
+        JOptionPane.showMessageDialog(this, "Desconectado del servidor");
+    }
+
+
 
     private void cargarRecursos() {
         try {
@@ -163,7 +209,7 @@ public class ChatClienteGUI extends JFrame {
             }
             photoTest = avatars[0];
         } catch (IOException e) {
-            System.err.println("Error cargando imágenes: " + e.getMessage() + " pd: si no va, pon rutar absolutas en cargarRecursos()");
+            System.err.println("Error cargando imágenes: " + e.getMessage() + " pd: si no va, pon ruta absolutas en cargarRecursos()");
         }
     }
 
@@ -173,7 +219,7 @@ public class ChatClienteGUI extends JFrame {
         row.setOpaque(false);
         row.setMaximumSize(new Dimension(1000, 130));
 
-        // bocadillo del mensaje)
+        // bocadillo del mensaje
         P5Bubble bubble = new P5Bubble(text, isMe, lastMsgWasMe);
         //avatar del mensaje
         AvatarPanel avatar = new AvatarPanel(isMe);
@@ -201,7 +247,9 @@ public class ChatClienteGUI extends JFrame {
 
     // SCROLLBAR (chatGPT)                                                                             -!!!!!!!!!!!!!!!!
     class P5ScrollBarUI extends BasicScrollBarUI {
-        @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {} // Track invisible
+        @Override
+        protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+        } // Track invisible
 
         @Override
         protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
@@ -233,10 +281,20 @@ public class ChatClienteGUI extends JFrame {
             g2.dispose();
         }
 
-        @Override protected JButton createDecreaseButton(int orientation) { return createHiddenButton(); }
-        @Override protected JButton createIncreaseButton(int orientation) { return createHiddenButton(); }
+        @Override
+        protected JButton createDecreaseButton(int orientation) {
+            return createHiddenButton();
+        }
+
+        @Override
+        protected JButton createIncreaseButton(int orientation) {
+            return createHiddenButton();
+        }
+
         private JButton createHiddenButton() {
-            JButton b = new JButton(); b.setPreferredSize(new Dimension(0, 0)); return b;
+            JButton b = new JButton();
+            b.setPreferredSize(new Dimension(0, 0));
+            return b;
         }
     }
 
@@ -245,6 +303,7 @@ public class ChatClienteGUI extends JFrame {
     class AvatarPanel extends JPanel {
         private boolean isMe;
         private float opacity = 0.0f, scale = 0.7f;
+
         public AvatarPanel(boolean isMe) {
             this.isMe = isMe;
             setPreferredSize(new Dimension(125, 125));
@@ -252,12 +311,18 @@ public class ChatClienteGUI extends JFrame {
 
             // animación
             Timer timer = new Timer(15, e -> {
-                opacity += 0.11f; scale += 0.035f;
-                if (opacity >= 1.0f) { opacity = 1.0f; scale = 1.0f; ((Timer)e.getSource()).stop(); }
+                opacity += 0.11f;
+                scale += 0.035f;
+                if (opacity >= 1.0f) {
+                    opacity = 1.0f;
+                    scale = 1.0f;
+                    ((Timer) e.getSource()).stop();
+                }
                 repaint();
             });
             timer.start();
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             if (photoTest == null) {
@@ -295,8 +360,13 @@ public class ChatClienteGUI extends JFrame {
 
             // animación
             Timer timer = new Timer(15, e -> {
-                opacity += 0.1f; scale += 0.03f;
-                if (opacity >= 1.0f) { opacity = 1.0f; scale = 1.0f; ((Timer)e.getSource()).stop(); }
+                opacity += 0.1f;
+                scale += 0.03f;
+                if (opacity >= 1.0f) {
+                    opacity = 1.0f;
+                    scale = 1.0f;
+                    ((Timer) e.getSource()).stop();
+                }
                 repaint();
             });
             timer.start();
@@ -329,9 +399,9 @@ public class ChatClienteGUI extends JFrame {
                     link.lineTo(xBase + bubbleW - 90, yBase);
                 } else if (!prevWasMe && !isMe) { // CASO 3: Suyo -> Suyo
                     link.moveTo(xBase + 160 + 50, yBase);
-                    link.lineTo(xBase + 120+ 50, yBase - 50);
-                    link.lineTo(xBase + 150+ 50, yBase - 50);
-                    link.lineTo(xBase + 190+ 50, yBase);
+                    link.lineTo(xBase + 120 + 50, yBase - 50);
+                    link.lineTo(xBase + 150 + 50, yBase - 50);
+                    link.lineTo(xBase + 190 + 50, yBase);
                 } else if (prevWasMe && !isMe) { // CASO 4: Mío -> Suyo
                     link.moveTo(xBase + 60, yBase);
                     link.lineTo(xBase + 20, yBase - 50);
