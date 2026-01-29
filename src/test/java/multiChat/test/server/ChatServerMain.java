@@ -12,10 +12,12 @@ public class ChatServerMain {
 
         ServerLogger logger = new ServerLogger("ChatServer_log.txt");
 
+        // kad: me da error, arreglalo ahora despois
+
         //Creamos servidor
-        ChatServer server = new ChatServer(Protocolo.PORT,logger);
+        //ChatServer server = new ChatServer(Protocolo.PORT,logger);
 
         //Bucle de Escucha
-        server.start();
+        //server.start();
     }
 }
