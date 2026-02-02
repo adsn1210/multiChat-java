@@ -63,5 +63,16 @@ public final class Protocolo {
     #El servidor es el "Repartidor" ya que el cliente no conoce los demas usuarios ONLINE y si tuviera que hacerlo seria bastanet complicado de configurar.
     # Tener en cuenta tambien -> line.split("\\|", 3); ->split(regex, limit), en este caso el Limite seran 3 como bien dije antes (TIPO|USUARIO|Contenido).
           */
+
+    // Añade esto a tu clase Protocolo.java
+    public static final String AVATAR = "AVATAR";
+
+    public static String avatar(int index) {
+        return AVATAR + SEP + index;
+    }
+
+    public static String serverAvatar(String user, int index) {
+        return AVATAR + SEP + user + SEP + index;
+    }
 }
 

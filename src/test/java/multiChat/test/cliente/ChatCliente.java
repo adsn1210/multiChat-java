@@ -16,9 +16,6 @@ public class ChatCliente {
     private BufferedReader in;
     private PrintWriter out;
 
-    /**
-     * Conecta con el servidor.
-     */
     public void connect(String host, int port) throws IOException {
         socket = new Socket(host, port);
 
@@ -32,37 +29,27 @@ public class ChatCliente {
         );
     }
 
-    /**
-     * Envía petición de login: JOIN|username
-     */
+
+    public void sendAvatar(int index) {
+        out.println(Protocolo.avatar(index));
+    }
+
     public void sendJoin(String username) {
         out.println(Protocolo.join(username));
     }
 
-    /**
-     * Envía un mensaje de chat: MSG|texto
-     */
     public void sendMessage(String text) {
         out.println(Protocolo.msg(text));
     }
 
-    /**
-     * Envía salida limpia: LEAVE|
-     */
     public void sendLeave() {
         out.println(Protocolo.leave());
     }
 
-    /**
-     * Devuelve el lector para que el ServerListener escuche al servidor.
-     */
     public BufferedReader getReader() {
         return in;
     }
 
-    /**
-     * Cierra la conexión.
-     */
     public void close() {
         try {
             if (socket != null) socket.close();
