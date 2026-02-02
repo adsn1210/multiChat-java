@@ -78,7 +78,7 @@ public class HiloCliente extends Thread {
 
             // 3) CHAT LOOP
             String line;
-                //O Manda mensaje o se desconecta
+            //O Manda mensaje o se desconecta
             while ((line = in.readLine()) != null) {
                 String[] parts = line.split("\\|", 2);
                 String type = parts[0];
