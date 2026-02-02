@@ -1,16 +1,14 @@
 package multiChat.test.cliente;
 
 import multiChat.test.common.Protocolo;
-
 import javax.swing.SwingUtilities;
 import java.io.BufferedReader;
 import java.io.IOException;
-import multiChat.test.cliente.ChatClienteGUI;
 
 public class ServerListener implements Runnable {
 
     private final BufferedReader in;
-    private  ChatClienteGUI gui;
+    private ChatClienteGUI gui;
 
     public ServerListener(BufferedReader in, ChatClienteGUI gui) {
         this.in = in;
@@ -22,50 +20,51 @@ public class ServerListener implements Runnable {
         try {
             String line;
 
-            // Mientras el servidor siga enviando mensajes
             while ((line = in.readLine()) != null) {
 
                 if (line.startsWith(Protocolo.OK)) {
                     continue;
                 }
-                // Parseo del protocolo
+
+                // --- 1. PROCESAR MENSAJES DE CHAT ---
                 if (line.startsWith(Protocolo.MSG + "|")) {
-                    // MSG|user|text
                     String[] parts = line.split("\\|", 3);
-                    String user = parts[1];
-                    String text = parts[2];
+                    if (parts.length == 3) {
+                        String user = parts[1];
+                        String text = parts[2];
+                        SwingUtilities.invokeLater(() -> gui.onChatMessage(user, text));
+                    }
+                }
 
-                    SwingUtilities.invokeLater(() ->
-                            gui.onChatMessage(user, text)
-                    );
+                // esto es pa procesar el avatar de cada uno
+                else if (line.startsWith(Protocolo.AVATAR + "|")) {
+                    String[] parts = line.split("\\|", 3);
 
-                } else if (line.startsWith(Protocolo.INFO + "|")) {
-                    // INFO|text
+                    if (parts.length == 3) {
+                        String user = parts[1]; int avatarIndex = Integer.parseInt(parts[2]);
+                        SwingUtilities.invokeLater(() -> gui.onAvatarChanged(user, avatarIndex));
+                    }
+                }
+
+                else if (line.startsWith(Protocolo.INFO + "|")) {
                     String info = line.substring((Protocolo.INFO + "|").length());
+                    SwingUtilities.invokeLater(() -> gui.onSystemMessage(info));
+                }
 
-                    SwingUtilities.invokeLater(() ->
-                            gui.onSystemMessage(info)
-                    );
-
-                } else if (line.startsWith(Protocolo.ERROR + "|")) {
-                    // ERROR|code
+                else if (line.startsWith(Protocolo.ERROR + "|")) {
                     String error = line.substring((Protocolo.ERROR + "|").length());
+                    SwingUtilities.invokeLater(() -> gui.onError(error));
+                }
 
-                    SwingUtilities.invokeLater(() ->
-                            gui.onError(error)
-                    );
-
-                } else {
-                    // Mensaje desconocido
-                    SwingUtilities.invokeLater(() ->
-                            gui.onDisconnected()
-                    );
+                else {
+                    System.out.println(line);
                 }
             }
 
         } catch (IOException e) {
-            // El servidor se ha caído o la conexión se cerró
             SwingUtilities.invokeLater(gui::onDisconnected);
+        } catch (NumberFormatException e) {
+            System.err.println("NO CARGA AVATAR - Mira ServerListener o GUI: " + e.getMessage());
         }
     }
 }
